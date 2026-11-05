@@ -25,6 +25,7 @@ interface CreativeModalProps {
   selectedTileCoords?: { x: number; y: number } | null;
   godModeLocked: boolean;
   onToggleGodModeLocked: () => void;
+  onTriggerCoalition?: () => void;
 }
 
 export const CreativeModal: React.FC<CreativeModalProps> = ({
@@ -47,6 +48,7 @@ export const CreativeModal: React.FC<CreativeModalProps> = ({
   selectedTileCoords,
   godModeLocked,
   onToggleGodModeLocked,
+  onTriggerCoalition,
 }) => {
   const [customGold, setCustomGold] = useState<string>('999999');
   const [customTroops, setCustomTroops] = useState<string>('50000');
@@ -321,6 +323,16 @@ export const CreativeModal: React.FC<CreativeModalProps> = ({
                 <span>Thanh Lọc Đất Cháy</span>
               </button>
             </div>
+
+            {onTriggerCoalition && (
+              <button
+                onClick={onTriggerCoalition}
+                className="w-full py-2 bg-gradient-to-r from-red-950/80 via-rose-950/80 to-amber-950/80 hover:from-red-900 hover:to-amber-900 border border-red-500/70 active:scale-95 text-red-200 font-extrabold rounded-xl flex items-center justify-center gap-1.5 shadow-md"
+              >
+                <Flame className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+                <span>🚨 Thử Nghiệm: Kích Hoạt Liên Minh Toàn Cầu (&gt;50% Đất)</span>
+              </button>
+            )}
 
             {selectedTileCoords && onClaimSelectedTile && (
               <button

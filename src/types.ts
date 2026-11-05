@@ -3,7 +3,7 @@
  */
 
 export type TerrainType = 'LAND' | 'WATER' | 'MOUNTAIN' | 'FOREST';
-export type BuildingType = 'NONE' | 'CITY' | 'BARRACKS' | 'FORTRESS' | 'PORT' | 'ARTILLERY';
+export type BuildingType = 'NONE' | 'CITY' | 'BARRACKS' | 'FORTRESS' | 'PORT' | 'ARTILLERY' | 'MISSILE_SILO' | 'AIR_DEFENSE';
 
 export type NationPersonality = 'AGGRESSIVE' | 'DEFENSIVE' | 'MERCHANT' | 'OPPORTUNIST';
 export type DiplomacyStatus = 'WAR' | 'TRUCE' | 'ALLIANCE';
@@ -32,6 +32,7 @@ export interface Tile {
   terrain: TerrainType;
   owner: number; // 0: Trung lập, 1: Người chơi, 2-6: Bot
   building: BuildingType;
+  buildingLevel?: number; // Cấp độ xây chồng công trình (Lv.1, Lv.2, Lv.3...)
   defenseBonus: number;
   isBorder: boolean;
   hasHarborAccess: boolean;
@@ -76,6 +77,7 @@ export interface Nation {
   capitalY: number;
   hasPort: boolean;
   general?: General; // Mỗi quốc gia có 1 tướng đại diện
+  titanBuffTimer?: number; // Đếm ngược Buff Tà Thần (+30% Sức mạnh, Vàng, Dân số trong 180s)
   techLevels: {
     economy: number;
     military: number;
@@ -162,6 +164,18 @@ export interface DarkTitan {
   remainingTime: number; // Thời gian còn lại (giây)
   x: number;
   y: number;
+  hp: number; // Máu hiện tại
+  maxHp: number; // Máu tối đa
   moveTimer: number;
   hasWarnedDespawn?: boolean;
 }
+
+export interface CoalitionData {
+  active: boolean;
+  remainingTimer: number; // Thời gian còn lại của Liên Minh (giây)
+  cooldownTimer: number; // Thời gian chờ trước khi liên minh mới có thể tái lập
+  memberNationIds: number[]; // ID các nước tham gia Liên Minh
+  targetSector: { x: number; y: number } | null; // Mục tiêu trọng điểm được liên minh chỉ định đồng loạt tiến công
+  lastCoordinationTimer: number;
+}
+

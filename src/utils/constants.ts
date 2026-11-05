@@ -6,7 +6,7 @@ export const TECH_TREE: TechNode[] = [
     branch: 'ECONOMY',
     level: 1,
     name: 'Khai Khẩn Điền Trang',
-    description: 'Tăng 25% sản lượng vàng từ đất đai và thành thị.',
+    description: 'Tăng 8% sản lượng vàng từ đất đai và thành thị.',
     cost: 150,
     researchTime: 10,
   },
@@ -15,7 +15,7 @@ export const TECH_TREE: TechNode[] = [
     branch: 'ECONOMY',
     level: 2,
     name: 'Phường Buôn Phồn Hoa',
-    description: 'Tăng 50% thu nhập vàng và giảm 15% chi phí xây dựng.',
+    description: 'Tăng 15% thu nhập vàng và giảm 8% chi phí xây dựng.',
     cost: 300,
     researchTime: 18,
   },
@@ -24,7 +24,7 @@ export const TECH_TREE: TechNode[] = [
     branch: 'ECONOMY',
     level: 3,
     name: 'Đế Quốc Hoàng Kim',
-    description: 'Tăng 100% thu nhập vàng, cộng thêm 50 vàng mỗi khi chiếm đất địch.',
+    description: 'Tăng 25% thu nhập vàng, cộng thêm 20 vàng khi chiếm đất địch.',
     cost: 500,
     researchTime: 25,
   },
@@ -33,7 +33,7 @@ export const TECH_TREE: TechNode[] = [
     branch: 'MILITARY',
     level: 1,
     name: 'Lò Rèn Kiếm Thép',
-    description: 'Tăng 25% tốc độ sinh quân và tốc độ hành quân.',
+    description: 'Tăng 10% tốc độ sinh quân và tốc độ hành quân.',
     cost: 150,
     researchTime: 10,
   },
@@ -42,7 +42,7 @@ export const TECH_TREE: TechNode[] = [
     branch: 'MILITARY',
     level: 2,
     name: 'Kỵ Binh Giáp Nặng',
-    description: 'Tăng 40% sát thương tiến công, tăng thêm +100 giới hạn quân tối đa.',
+    description: 'Tăng 15% sát thương tiến công, tăng +30 giới hạn quân tối đa.',
     cost: 300,
     researchTime: 18,
   },
@@ -51,7 +51,7 @@ export const TECH_TREE: TechNode[] = [
     branch: 'MILITARY',
     level: 3,
     name: 'Quân Đoàn Vô Song',
-    description: 'Bỏ qua hoàn toàn hiệu ứng làm chậm của Rừng và giảm 50% thủ Núi.',
+    description: 'Giảm 20% sức phòng thủ của kẻ địch ở ô địa hình Núi.',
     cost: 500,
     researchTime: 25,
   },
@@ -60,7 +60,7 @@ export const TECH_TREE: TechNode[] = [
     branch: 'DEFENSE',
     level: 1,
     name: 'Hào Sâu Cọc Nhọn',
-    description: 'Tăng 30% sức phòng thủ cho toàn bộ biên giới lãnh thổ.',
+    description: 'Tăng 10% sức phòng thủ cho toàn bộ biên giới lãnh thổ.',
     cost: 150,
     researchTime: 10,
   },
@@ -69,7 +69,7 @@ export const TECH_TREE: TechNode[] = [
     branch: 'DEFENSE',
     level: 2,
     name: 'Tường Đá Hoa Cương',
-    description: 'Pháo đài bảo hộ giảm 50% thiệt hại cho cả các ô láng giềng.',
+    description: 'Tăng 18% sức phòng thủ biên giới và giảm sát thương.',
     cost: 300,
     researchTime: 18,
   },
@@ -78,7 +78,7 @@ export const TECH_TREE: TechNode[] = [
     branch: 'DEFENSE',
     level: 3,
     name: 'Vạn Lý Trường Thành',
-    description: 'Kẻ địch tiến công chịu phản đòn tổn thất nhân đôi khi đánh vào biên giới.',
+    description: 'Tăng 25% sức phòng thủ tổng thể khi kẻ địch tiến công.',
     cost: 500,
     researchTime: 25,
   },
@@ -125,33 +125,45 @@ export const BUILDING_INFO: Record<Exclude<BuildingType, 'NONE'>, {
 }> = {
   CITY: {
     name: 'Thành Thị',
-    desc: 'Tăng mạnh thu nhập vàng và +40 trần dân số.',
+    desc: 'Tăng mạnh thu nhập vàng và +40 trần dân số. Hỗ trợ xây chồng nâng cấp!',
     baseCost: 120,
     icon: 'Building2',
   },
   BARRACKS: {
     name: 'Doanh Trại',
-    desc: 'Tăng tốc độ sinh quân và +80 trần dân số.',
+    desc: 'Tăng tốc độ sinh quân và +80 trần dân số. Hỗ trợ xây chồng nâng cấp!',
     baseCost: 140,
     icon: 'Swords',
   },
   FORTRESS: {
     name: 'Pháo Đài',
-    desc: 'Tăng gấp 2.5 lần phòng thủ cho khu vực biên giới.',
+    desc: 'Tăng 2.5x phòng thủ. Xây chồng để tăng thêm cấp phòng thủ vững chắc!',
     baseCost: 90,
     icon: 'Shield',
   },
   PORT: {
     name: 'Hải Cảng',
-    desc: 'Xây ven biển để quân đội có thể vượt biển đổ bộ sang đảo khác!',
+    desc: 'Xây ven biển để quân đội vượt biển đổ bộ. Hỗ trợ xây chồng tăng thu nhập!',
     baseCost: 160,
     icon: 'Anchor',
   },
   ARTILLERY: {
     name: 'Đại Pháo',
-    desc: 'Tự động nã pháo plasma mỗi 15s vào ô địch trong cự ly 5 ô, giảm dần quân phòng thủ.',
+    desc: 'Bắn plasma mỗi 15s. Xây chồng tăng sát thương & cự ly nã pháo!',
     baseCost: 180,
     icon: 'Crosshair',
+  },
+  MISSILE_SILO: {
+    name: 'Bệ Tên Lửa',
+    desc: 'Bắn tên lửa chiến thuật tầm xa tàn phá quân địch và vùng đất trong phạm vi lớn!',
+    baseCost: 260,
+    icon: 'Rocket',
+  },
+  AIR_DEFENSE: {
+    name: 'Trạm Phòng Không',
+    desc: 'Đánh chặn đợt quân tiến công & vô hiệu hóa pháo kích địch trong tầm ảnh hưởng!',
+    baseCost: 210,
+    icon: 'ShieldAlert',
   },
 };
 
@@ -160,7 +172,7 @@ export const BUILDING_INFO: Record<Exclude<BuildingType, 'NONE'>, {
  * Dễ dàng tùy chỉnh các thông số tại đây!
  */
 export const DARK_TITAN_CONFIG = {
-  // Thời điểm xuất hiện (giây): 900s = phút thứ 15. Để kiểm tra nhanh, bạn có thể chỉnh thành 10 (10 giây)!
+  // Thời điểm xuất hiện (giây): 900s = phút thứ 15.
   SPAWN_TIME_SECONDS: 900,
   // Thời gian tồn tại: 300s = 5 phút
   DURATION_SECONDS: 300,
@@ -170,6 +182,12 @@ export const DARK_TITAN_CONFIG = {
   MOVE_INTERVAL_SECONDS: 8,
   // Sát thương quân đội: Giảm 25 quân của quốc gia ở ô nó đi qua
   DAMAGE_TROOPS: 25,
+  // Lượng Máu khủng của Tà Thần: 1200 HP
+  MAX_HP: 1200,
+  // Thưởng Vàng hậu lĩnh khi đánh gục Tà Thần: 2,000 Vàng
+  BOUNTY_GOLD: 2000,
+  // Thời gian nhận Buff sức mạnh +30%: 180s = 3 phút
+  BUFF_DURATION_SECONDS: 180,
 };
 
 export function formatGameTime(seconds: number): string {

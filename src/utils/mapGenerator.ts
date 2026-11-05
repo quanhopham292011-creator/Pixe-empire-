@@ -98,11 +98,11 @@ export function generateWorldMap(
       const height = (n1 + n2 + n3) / 1.6 + continentMask - 0.42;
 
       let terrain: TerrainType = 'WATER';
-      if (height > 0.50) {
+      if (height > 0.62) {
         terrain = 'MOUNTAIN';
-      } else if (height > 0.38) {
+      } else if (height > 0.42) {
         terrain = 'FOREST';
-      } else if (height > 0.12) {
+      } else if (height > 0.10) {
         terrain = 'LAND';
       } else {
         terrain = 'WATER';

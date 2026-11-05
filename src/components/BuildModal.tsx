@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { BuildingType, Tile, Nation } from '../types';
 import { BUILDING_INFO } from '../utils/constants';
-import { Building2, Swords, Shield, Anchor, Crosshair, X, Check, Layers } from 'lucide-react';
+import { Building2, Swords, Shield, Anchor, Crosshair, Rocket, ShieldAlert, X, Check, Layers } from 'lucide-react';
 
 interface BuildModalProps {
   isOpen: boolean;
@@ -31,7 +31,7 @@ export const BuildModal: React.FC<BuildModalProps> = ({
   const calculateBatchCost = (type: Exclude<BuildingType, 'NONE'>, goal: BatchOption) => {
     const base = BUILDING_INFO[type].baseCost;
     const currentCount = existingBuildingCounts[type] || 0;
-    const discount = playerNation.techLevels?.economy >= 2 ? 0.85 : 1.0;
+    const discount = playerNation.techLevels?.economy >= 2 ? 0.92 : 1.0;
     const gold = playerNation.gold || 0;
 
     let totalCost = 0;
@@ -61,7 +61,7 @@ export const BuildModal: React.FC<BuildModalProps> = ({
     return { totalCost, actualCount };
   };
 
-  const buildingTypes: Array<Exclude<BuildingType, 'NONE'>> = ['CITY', 'BARRACKS', 'FORTRESS', 'PORT', 'ARTILLERY'];
+  const buildingTypes: Array<Exclude<BuildingType, 'NONE'>> = ['CITY', 'BARRACKS', 'FORTRESS', 'PORT', 'ARTILLERY', 'MISSILE_SILO', 'AIR_DEFENSE'];
 
   const getIcon = (type: BuildingType) => {
     switch (type) {
@@ -70,6 +70,8 @@ export const BuildModal: React.FC<BuildModalProps> = ({
       case 'FORTRESS': return <Shield className="w-4 h-4 text-blue-400" />;
       case 'PORT': return <Anchor className="w-4 h-4 text-cyan-400" />;
       case 'ARTILLERY': return <Crosshair className="w-4 h-4 text-purple-400" />;
+      case 'MISSILE_SILO': return <Rocket className="w-4 h-4 text-rose-400" />;
+      case 'AIR_DEFENSE': return <ShieldAlert className="w-4 h-4 text-emerald-400" />;
       default: return null;
     }
   };
@@ -149,10 +151,16 @@ export const BuildModal: React.FC<BuildModalProps> = ({
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1.5 flex-wrap">
                       <span className="font-bold text-white text-xs sm:text-sm">{info.name}</span>
-                      {isCurrentBuilding && (
-                        <span className="text-[9px] bg-blue-500/20 text-blue-300 border border-blue-500/30 px-1.5 py-0.2 rounded-md">
-                          Đã xây ở đây
+                      {isCurrentBuilding ? (
+                        <span className="text-[9px] bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30 px-1.5 py-0.2 rounded-md">
+                          Cấp {selectedTile.buildingLevel || 1} (Xây Chồng)
                         </span>
+                      ) : (
+                        selectedTile.building !== 'NONE' && (
+                          <span className="text-[9px] bg-slate-800 text-slate-400 px-1.5 py-0.2 rounded-md">
+                            Đổi công trình
+                          </span>
+                        )
                       )}
                     </div>
                     <p className="text-[10px] text-slate-300 truncate mt-0.5">{info.desc}</p>
@@ -187,7 +195,11 @@ export const BuildModal: React.FC<BuildModalProps> = ({
                     }`}
                   >
                     <Check className="w-3.5 h-3.5" />
-                    <span>Xây ({actualCount > 1 ? `x${actualCount}` : 'x1'})</span>
+                    <span>
+                      {isCurrentBuilding 
+                        ? `Xây Chồng (${actualCount > 1 ? `x${actualCount}` : '+1 Cấp'})` 
+                        : `Xây (${actualCount > 1 ? `x${actualCount}` : 'x1'})`}
+                    </span>
                   </button>
                 </div>
               </div>
