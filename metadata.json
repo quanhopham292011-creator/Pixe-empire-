@@ -1,0 +1,6 @@
+{
+  "name": "Pixel Empire - Tranh Đoạt Lãnh Thổ",
+  "description": "Game chiến thuật thời gian thực thời cổ đại pixel art lấy cảm hứng từ OpenFront, Rise of Kingdoms và WorldBox, tối ưu cho điện thoại di động.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,151 @@
+import { TechNode, BuildingType } from '../types';
+
+export const TECH_TREE: TechNode[] = [
+  {
+    id: 'eco_1',
+    branch: 'ECONOMY',
+    level: 1,
+    name: 'Khai Khẩn Điền Trang',
+    description: 'Tăng 25% sản lượng vàng từ đất đai và thành thị.',
+    cost: 150,
+    researchTime: 10,
+  },
+  {
+    id: 'eco_2',
+    branch: 'ECONOMY',
+    level: 2,
+    name: 'Phường Buôn Phồn Hoa',
+    description: 'Tăng 50% thu nhập vàng và giảm 15% chi phí xây dựng.',
+    cost: 300,
+    researchTime: 18,
+  },
+  {
+    id: 'eco_3',
+    branch: 'ECONOMY',
+    level: 3,
+    name: 'Đế Quốc Hoàng Kim',
+    description: 'Tăng 100% thu nhập vàng, cộng thêm 50 vàng mỗi khi chiếm đất địch.',
+    cost: 500,
+    researchTime: 25,
+  },
+  {
+    id: 'mil_1',
+    branch: 'MILITARY',
+    level: 1,
+    name: 'Lò Rèn Kiếm Thép',
+    description: 'Tăng 25% tốc độ sinh quân và tốc độ hành quân.',
+    cost: 150,
+    researchTime: 10,
+  },
+  {
+    id: 'mil_2',
+    branch: 'MILITARY',
+    level: 2,
+    name: 'Kỵ Binh Giáp Nặng',
+    description: 'Tăng 40% sát thương tiến công, tăng thêm +100 giới hạn quân tối đa.',
+    cost: 300,
+    researchTime: 18,
+  },
+  {
+    id: 'mil_3',
+    branch: 'MILITARY',
+    level: 3,
+    name: 'Quân Đoàn Vô Song',
+    description: 'Bỏ qua hoàn toàn hiệu ứng làm chậm của Rừng và giảm 50% thủ Núi.',
+    cost: 500,
+    researchTime: 25,
+  },
+  {
+    id: 'def_1',
+    branch: 'DEFENSE',
+    level: 1,
+    name: 'Hào Sâu Cọc Nhọn',
+    description: 'Tăng 30% sức phòng thủ cho toàn bộ biên giới lãnh thổ.',
+    cost: 150,
+    researchTime: 10,
+  },
+  {
+    id: 'def_2',
+    branch: 'DEFENSE',
+    level: 2,
+    name: 'Tường Đá Hoa Cương',
+    description: 'Pháo đài bảo hộ giảm 50% thiệt hại cho cả các ô láng giềng.',
+    cost: 300,
+    researchTime: 18,
+  },
+  {
+    id: 'def_3',
+    branch: 'DEFENSE',
+    level: 3,
+    name: 'Vạn Lý Trường Thành',
+    description: 'Kẻ địch tiến công chịu phản đòn tổn thất nhân đôi khi đánh vào biên giới.',
+    cost: 500,
+    researchTime: 25,
+  },
+];
+
+export const REAL_NATION_NAMES: string[] = [
+  "Việt Nam", "Nhật Bản", "Hàn Quốc", "Trung Quốc", "Hoa Kỳ", "Anh Quốc", "Pháp", "Đức", "Ý", "Tây Ban Nha",
+  "Bồ Đào Nha", "Nga", "Brazil", "Argentina", "Úc", "Ấn Độ", "Thái Lan", "Singapore", "Indonesia", "Malaysia",
+  "Thụy Sĩ", "Hà Lan", "Bỉ", "Thụy Điển", "Na Uy", "Đan Mạch", "Phần Lan", "Ai Cập", "Nam Phi", "Canada",
+  "Mexico", "Colombia", "Chile", "Peru", "Hy Lạp", "Thổ Nhĩ Kỳ", "Ả Rập Xê Út", "UAE", "Qatar", "Iran",
+  "Iraq", "Israel", "Áo", "Ba Lan", "Hung-ga-ri", "Tiệp Khắc", "Romania", "Bulgaria", "Serbia", "Croatia",
+  "Slovenia", "Slovakia", "Ukraine", "Belarus", "Kazakhstan", "Uzbekistan", "Mông Cổ", "Nepal", "Sri Lanka", "Bangladesh",
+  "Myanmar", "Lào", "Campuchia", "Philippines", "Brunei", "New Zealand", "Fiji", "Cuba", "Jamaica", "Panama",
+  "Costa Rica", "Uruguay", "Paraguay", "Bolivia", "Ecuador", "Venezuela", "Kenya", "Nigeria", "Ghana", "Ethiopia",
+  "Ma-rốc", "Algeria", "Tunisia", "Zimbabwe", "Senegal", "Bờ Biển Ngà", "Cameroon", "Tanzania", "Madagascar", "Mozambique",
+  "Angola", "Zambia", "Uganda", "Rwanda", "Jordan", "Liban", "Oman", "Kuwait", "Bahrain", "Armenia",
+  "Georgia", "Azerbaijan", "Ireland", "Iceland", "Luxembourg", "Monaco", "Liechtenstein", "Malta", "Síp", "Estonia",
+  "Latvia", "Lithuania", "Moldova", "Albania", "Bắc Macedonia", "Montenegro", "Bosnia", "Kosovo", "San Marino", "Vatican",
+  "Andorra", "Micronesia", "Palau", "Samoa", "Tonga", "Vanuatu", "Quần đảo Solomon", "Tuvalu", "Kiribati", "Quần đảo Marshall",
+  "Nauru", "Papua New Guinea", "Đông Timor", "Maldives", "Bhutan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Seychelles", "Mauritius",
+  "Cape Verde", "Sao Tome & Principe", "Comoros", "Djibouti", "Eritrea", "Somalia", "Sudan", "Nam Sudan", "Chad", "Niger",
+  "Mali", "Mauritania", "Gambia", "Guinea", "Guinea-Bissau", "Sierra Leone", "Liberia", "Burkina Faso", "Togo", "Benin",
+  "Cộng hòa Trung Phi", "Xích Đạo Guinea", "Gabon", "Cộng hòa Congo", "Cộng hòa Dân chủ Congo", "Burundi", "Malawi", "Eswatini", "Lesotho", "Namibia",
+  "Botswana", "Suriname", "Guyana", "Bahamas", "Barbados", "Trinidad & Tobago", "Dominica", "Saint Lucia", "Grenada", "Saint Vincent",
+  "Antigua & Barbuda", "Saint Kitts & Nevis", "Belize", "Guatemala", "El Salvador", "Honduras", "Nicaragua", "Dominicana", "Haiti", "Bermuda"
+];
+
+export function formatPopulation(num: number): string {
+  if (num <= 0) return '0';
+  if (num < 1000) return `${num}`;
+  if (num < 1_000_000) {
+    const k = (num / 1000).toFixed(1).replace(/\.0$/, '');
+    return `${k}K`;
+  }
+  const m = (num / 1_000_000).toFixed(1).replace(/\.0$/, '');
+  return `${m}M`;
+}
+
+export const BUILDING_INFO: Record<Exclude<BuildingType, 'NONE'>, {
+  name: string;
+  desc: string;
+  baseCost: number;
+  icon: string;
+}> = {
+  CITY: {
+    name: 'Thành Thị',
+    desc: 'Tăng mạnh thu nhập vàng và +40 trần dân số.',
+    baseCost: 120,
+    icon: 'Building2',
+  },
+  BARRACKS: {
+    name: 'Doanh Trại',
+    desc: 'Tăng tốc độ sinh quân và +80 trần dân số.',
+    baseCost: 140,
+    icon: 'Swords',
+  },
+  FORTRESS: {
+    name: 'Pháo Đài',
+    desc: 'Tăng gấp 2.5 lần phòng thủ cho khu vực biên giới.',
+    baseCost: 90,
+    icon: 'Shield',
+  },
+  PORT: {
+    name: 'Hải Cảng',
+    desc: 'Xây ven biển để quân đội có thể vượt biển đổ bộ sang đảo khác!',
+    baseCost: 160,
+    icon: 'Anchor',
+  },
+};
+
