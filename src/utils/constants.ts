@@ -147,5 +147,34 @@ export const BUILDING_INFO: Record<Exclude<BuildingType, 'NONE'>, {
     baseCost: 160,
     icon: 'Anchor',
   },
+  ARTILLERY: {
+    name: 'Đại Pháo',
+    desc: 'Tự động nã pháo plasma mỗi 15s vào ô địch trong cự ly 5 ô, giảm dần quân phòng thủ.',
+    baseCost: 180,
+    icon: 'Crosshair',
+  },
 };
+
+/**
+ * Cấu hình Tà Thần Cổ Đại (Lấy cảm hứng Tà Thần phút 15 Liên Quân Mobile)
+ * Dễ dàng tùy chỉnh các thông số tại đây!
+ */
+export const DARK_TITAN_CONFIG = {
+  // Thời điểm xuất hiện (giây): 900s = phút thứ 15. Để kiểm tra nhanh, bạn có thể chỉnh thành 10 (10 giây)!
+  SPAWN_TIME_SECONDS: 900,
+  // Thời gian tồn tại: 300s = 5 phút
+  DURATION_SECONDS: 300,
+  // Báo trước khi biến mất: 30s
+  WARNING_BEFORE_DESPAWN: 30,
+  // Tốc độ di chuyển: Cứ mỗi 8 giây di chuyển 1 ô
+  MOVE_INTERVAL_SECONDS: 8,
+  // Sát thương quân đội: Giảm 25 quân của quốc gia ở ô nó đi qua
+  DAMAGE_TROOPS: 25,
+};
+
+export function formatGameTime(seconds: number): string {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+}
 

@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Tile, Nation } from '../types';
+import { Tile, Nation, DarkTitan } from '../types';
 
 interface MinimapProps {
   tiles: Tile[][];
@@ -7,6 +7,8 @@ interface MinimapProps {
   mapSize: number;
   camera: { x: number; y: number; zoom: number };
   onNavigate: (mapX: number, mapY: number) => void;
+  darkTitan?: DarkTitan | null;
+  darkTitans?: DarkTitan[];
 }
 
 export const Minimap: React.FC<MinimapProps> = ({
@@ -15,12 +17,59 @@ export const Minimap: React.FC<MinimapProps> = ({
   mapSize,
   camera,
   onNavigate,
+  darkTitan,
+  darkTitans,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const offscreenCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
+  // 1. Offscreen Cache: Chỉ vẽ lại toàn bộ lưới ô vuông khi tiles hoặc nations thay đổi
+  useEffect(() => {
+    if (!tiles || tiles.length === 0) return;
+
+    if (!offscreenCanvasRef.current) {
+      offscreenCanvasRef.current = document.createElement('canvas');
+      offscreenCanvasRef.current.width = 100;
+      offscreenCanvasRef.current.height = 100;
+    }
+
+    const offCanvas = offscreenCanvasRef.current;
+    const offCtx = offCanvas.getContext('2d');
+    if (!offCtx) return;
+
+    const size = offCanvas.width;
+    const tileSize = size / mapSize;
+
+    offCtx.clearRect(0, 0, size, size);
+
+    // Vẽ địa hình & lãnh thổ vào offscreen cache
+    for (let y = 0; y < mapSize; y++) {
+      for (let x = 0; x < mapSize; x++) {
+        const t = tiles[y]?.[x];
+        if (!t) continue;
+
+        if (t.terrain === 'WATER') {
+          offCtx.fillStyle = '#1e3a8a';
+        } else if (t.owner > 0) {
+          const nat = nations.find(n => n.id === t.owner);
+          offCtx.fillStyle = nat?.color || '#cbd5e1';
+        } else if (t.terrain === 'MOUNTAIN') {
+          offCtx.fillStyle = '#475569';
+        } else if (t.terrain === 'FOREST') {
+          offCtx.fillStyle = '#14532d';
+        } else {
+          offCtx.fillStyle = '#64748b';
+        }
+
+        offCtx.fillRect(x * tileSize, y * tileSize, Math.ceil(tileSize), Math.ceil(tileSize));
+      }
+    }
+  }, [tiles, nations, mapSize]);
+
+  // 2. Main Render: Vẽ cache lên canvas chính và render Viewport Box, Boss & Đồng minh nhanh gọn (60fps)
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas || !tiles || tiles.length === 0) return;
+    if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -29,44 +78,56 @@ export const Minimap: React.FC<MinimapProps> = ({
 
     ctx.clearRect(0, 0, size, size);
 
-    // 1. Vẽ địa hình & lãnh thổ
-    for (let y = 0; y < mapSize; y++) {
-      for (let x = 0; x < mapSize; x++) {
-        const t = tiles[y]?.[x];
-        if (!t) continue;
-
-        if (t.terrain === 'WATER') {
-          ctx.fillStyle = '#1e3a8a';
-        } else if (t.owner > 0) {
-          const nat = nations.find(n => n.id === t.owner);
-          ctx.fillStyle = nat?.color || '#cbd5e1';
-        } else if (t.terrain === 'MOUNTAIN') {
-          ctx.fillStyle = '#475569';
-        } else if (t.terrain === 'FOREST') {
-          ctx.fillStyle = '#14532d';
-        } else {
-          ctx.fillStyle = '#64748b';
-        }
-
-        ctx.fillRect(x * tileSize, y * tileSize, Math.ceil(tileSize), Math.ceil(tileSize));
-      }
+    // Vẽ nền địa hình từ offscreen cache
+    if (offscreenCanvasRef.current) {
+      ctx.drawImage(offscreenCanvasRef.current, 0, 0);
     }
 
-    // 2. Điểm sáng Thủ đô của Người chơi & Boss
+    // Điểm sáng Thủ đô của Người chơi, Đồng minh & Boss
+    const playerNation = nations.find(n => n.isPlayer);
     nations.forEach(nation => {
       if (nation.id === 0 || nation.isEliminated) return;
-      const isMajor = nation.isPlayer || nation.tier === 'BOSS';
-      if (isMajor) {
+      const isPlayer = nation.isPlayer;
+      const isBoss = nation.tier === 'BOSS';
+      const isAlly = playerNation?.diplomacy[nation.id]?.status === 'ALLIANCE';
+
+      if (isPlayer || isBoss || isAlly) {
         const cx = nation.capitalX * tileSize;
         const cy = nation.capitalY * tileSize;
-        ctx.fillStyle = nation.isPlayer ? '#38bdf8' : '#ef4444';
+        
+        ctx.fillStyle = isPlayer ? '#38bdf8' : isAlly ? '#10b981' : '#ef4444';
         ctx.beginPath();
-        ctx.arc(cx, cy, nation.isPlayer ? 2.5 : 2.0, 0, Math.PI * 2);
+        ctx.arc(cx, cy, isPlayer ? 2.5 : isAlly ? 2.2 : 2.0, 0, Math.PI * 2);
         ctx.fill();
+
+        // Vòng phát sáng cho đồng minh và người chơi
+        if (isAlly || isPlayer) {
+          ctx.strokeStyle = isPlayer ? 'rgba(56, 189, 248, 0.6)' : 'rgba(16, 185, 129, 0.6)';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
       }
     });
 
-    // 3. Khung nhìn Camera thực tế (Viewport Box)
+    // Điểm đánh dấu Tà Thần Cổ Đại (Pulsing Dark Crimson Beacon cho tất cả Tà Thần)
+    const activeTitans = darkTitans && darkTitans.length > 0
+      ? darkTitans.filter(t => t.isActive)
+      : (darkTitan && darkTitan.isActive ? [darkTitan] : []);
+
+    activeTitans.forEach(titan => {
+      const dtx = titan.x * tileSize + tileSize / 2;
+      const dty = titan.y * tileSize + tileSize / 2;
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.arc(dtx, dty, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = '#a855f7';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    });
+
+    // Khung nhìn Camera thực tế (Viewport Box)
     const TILE_PIXEL_SIZE = 24;
     const vpW = window.innerWidth || 360;
     const vpH = window.innerHeight || 560;
@@ -87,7 +148,7 @@ export const Minimap: React.FC<MinimapProps> = ({
     ctx.fillStyle = 'rgba(56, 189, 248, 0.15)';
     ctx.fillRect(boxX, boxY, boxW, boxH);
 
-  }, [tiles, nations, mapSize, camera]);
+  }, [camera, darkTitan, darkTitans, nations, mapSize]);
 
   const handleInteract = (clientX: number, clientY: number) => {
     const canvas = canvasRef.current;

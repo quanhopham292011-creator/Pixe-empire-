@@ -277,7 +277,7 @@ export function generateWorldMap(
       tier = 'PLAYER';
       initPop = 10;
       initTroops = 20;
-      initGold = 120;
+      initGold = 50;
       initLandRadius = 2.2;
     } else if (isBoss) {
       tier = 'BOSS';

@@ -3,7 +3,7 @@
  */
 
 export type TerrainType = 'LAND' | 'WATER' | 'MOUNTAIN' | 'FOREST';
-export type BuildingType = 'NONE' | 'CITY' | 'BARRACKS' | 'FORTRESS' | 'PORT';
+export type BuildingType = 'NONE' | 'CITY' | 'BARRACKS' | 'FORTRESS' | 'PORT' | 'ARTILLERY';
 
 export type NationPersonality = 'AGGRESSIVE' | 'DEFENSIVE' | 'MERCHANT' | 'OPPORTUNIST';
 export type DiplomacyStatus = 'WAR' | 'TRUCE' | 'ALLIANCE';
@@ -35,6 +35,7 @@ export interface Tile {
   defenseBonus: number;
   isBorder: boolean;
   hasHarborAccess: boolean;
+  scorchedTimer?: number; // Đất cháy / nhiễm phóng xạ sau đại chiến (giây)
 }
 
 export type SettlementTier = 'TIER_1_FOREST' | 'TIER_2_TRIBE' | 'TIER_3_ETHNIC' | 'PLAYER' | 'BOSS';
@@ -126,6 +127,7 @@ export interface GameEvent {
   timestamp: string;
 }
 
+export type GameMode = 'STANDARD' | 'CREATIVE';
 export type GameDifficulty = 'EASY' | 'NORMAL' | 'HARD';
 export type MapDimension = 64 | 96 | 128;
 
@@ -151,4 +153,15 @@ export interface WeatherParticle {
   opacity: number;
   type: 'CLOUD' | 'RAIN_DROP';
   puffs?: WeatherCloudPuff[];
+}
+
+export interface DarkTitan {
+  id?: string;
+  isActive: boolean;
+  spawnTimestamp: number;
+  remainingTime: number; // Thời gian còn lại (giây)
+  x: number;
+  y: number;
+  moveTimer: number;
+  hasWarnedDespawn?: boolean;
 }
