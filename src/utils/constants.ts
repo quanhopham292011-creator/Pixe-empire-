@@ -1,5 +1,7 @@
 import { TechNode, BuildingType } from '../types';
 
+export const TILE_PIXEL_SIZE = 24; // Kích thước ô chuẩn 24px
+
 export const TECH_TREE: TechNode[] = [
   {
     id: 'eco_1',
